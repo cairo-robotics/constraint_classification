@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="predicate_classification" type="predicate_classification_service" name="predicate_classification_service"/>
+  <test pkg="predicate_classification" type="predicate_classification_test"   test-name="predicate_classification_test"/>
+</launch>

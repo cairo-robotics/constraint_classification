@@ -1,0 +1,6 @@
+predicate_classification_msgs/Upright upright
+predicate_classification_msgs/Proximity proximity
+---
+uint8 upright_classification
+uint8 proximity_classification
+
