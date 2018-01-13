@@ -4,7 +4,7 @@
 #include "geometry_msgs/Pose.h"
 #include "geometry_msgs/Pose.h"
 
-bool run_classifier(predicate_classification_msgs::PredicateClassification::Request  &req, predicate_classification_msgs::PredicateClassification::Response &res)
+bool run_classifier(predicate_class ification_msgs::PredicateClassification::Request  &req, predicate_classification_msgs::PredicateClassification::Response &res)
 {
   typedef bool (*pfunc)(geometry_msgs::Pose, geometry_msgs::Pose, float);
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "predicate_classification_server");
   ros::NodeHandle n;
 
-  ros::ServiceServer service = n.advertiseService("binary_predicate_classification", run_classifier);
+  ros::ServiceServer service = n.advertiseService("predicate_classification", run_classifier);
   ROS_INFO("Ready to perform predicate classification.");
   ros::spin();
 
