@@ -1,0 +1,3 @@
+float64 threshold_distance
+float64 reference_height
+geometry_msgs/Pose object_pose

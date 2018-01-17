@@ -1,18 +1,16 @@
 #include "ros/ros.h"
-#include "predicate_classification_msgs/PredicateClassifcation.h"
+#include "predicate_classification_msgs/PredicateClassification.h"
 #include "predicate_classification/predicate_classifiers.h"
 #include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Pose.h"
-#include <typeinfo>       // operator typeid
 #include <cstdlib>
 #include <gtest/gtest.h>
 
 TEST(PredicateClassficationServiceTest, falseClassifications)
 {
   ros::NodeHandle n;
-  ros::ServiceClient client = n.serviceClient<predicate_classification_msgs::PredicateClassifcation>("predicate_classification");
+  ros::ServiceClient client = n.serviceClient<predicate_classification_msgs::PredicateClassification>("predicate_classification");
   
-  predicate_classification_msgs::PredicateClassifcation srv;
+  predicate_classification_msgs::PredicateClassification srv;
 
   srv.request.upright.upright_pose.position.x = 0.0;
   srv.request.upright.upright_pose.position.y = 0.0;
@@ -61,9 +59,9 @@ TEST(PredicateClassficationServiceTest, falseClassifications)
 TEST(PredicateClassficationServiceTest, trueClassifications)
 { 
   ros::NodeHandle n;
-  ros::ServiceClient client = n.serviceClient<predicate_classification_msgs::PredicateClassifcation>("predicate_classification");
+  ros::ServiceClient client = n.serviceClient<predicate_classification_msgs::PredicateClassification>("predicate_classification");
   
-  predicate_classification_msgs::PredicateClassifcation srv;
+  predicate_classification_msgs::PredicateClassification srv;
 
   srv.request.upright.upright_pose.position.x = 0.0;
   srv.request.upright.upright_pose.position.y = 0.0;

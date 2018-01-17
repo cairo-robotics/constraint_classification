@@ -8,11 +8,18 @@
 #include "tf2/LinearMath/Vector3.h"
 #include "geometry_msgs/Pose.h"
 #include <math.h>
- 
-float getEuclideanDistance(float x1, float y1, float z1, float x2, float y2, float z2);
 
-bool upright(geometry_msgs::Pose upright_pose, geometry_msgs::Pose current_pose, float threshold_angle);
+namespace predicate_classifiers 
+{
 
-bool proximity(geometry_msgs::Pose object_one_pose, geometry_msgs::Pose object_two_pose, float threshold_distance);
+  float getEuclideanDistance(float x1, float y1, float z1, float x2, float y2, float z2);
+
+  bool upright(geometry_msgs::Pose upright_pose, geometry_msgs::Pose current_pose, float threshold_angle);
+
+  bool proximity(geometry_msgs::Pose object_one_pose, geometry_msgs::Pose object_two_pose, float threshold_distance);
+
+  bool height(geometry_msgs::Pose object_one_pose, float reference_z_value, float threshold_distance);
+
+}
 
 #endif

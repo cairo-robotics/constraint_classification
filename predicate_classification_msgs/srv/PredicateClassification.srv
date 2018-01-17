@@ -1,6 +1,8 @@
 predicate_classification_msgs/Upright upright
 predicate_classification_msgs/Proximity proximity
+predicate_classification_msgs/Height height
 ---
 uint8 upright_classification
 uint8 proximity_classification
+uint8 height_classification
 

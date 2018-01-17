@@ -24,6 +24,7 @@ add_message_files(
   FILES
   Proximity.msg
   Upright.msg
+  Height.msg
 )
 
 ## Generate services in the 'srv' folder
