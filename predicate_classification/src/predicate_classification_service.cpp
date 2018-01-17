@@ -2,21 +2,12 @@
 #include "predicate_classification_msgs/PredicateClassification.h"
 #include "predicate_classification/predicate_classifiers.h"
 #include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Pose.h"
 
-bool run_classifier(predicate_class ification_msgs::PredicateClassification::Request  &req, predicate_classification_msgs::PredicateClassification::Response &res)
-{
-  typedef bool (*pfunc)(geometry_msgs::Pose, geometry_msgs::Pose, float);
-
-  pfunc upright_classifier = &upright;
-  pfunc proximity_classifier = &proximity;
-
-  std::map <std::string, pfunc> predicate_classifier_map;
-  predicate_classifier_map["upright"] = upright_classifier;
-  predicate_classifier_map["proximity"] = proximity_classifier;
-  
-  res.upright_classification = predicate_classifier_map["upright"](req.upright.upright_pose, req.upright.current_pose, req.upright.threshold_angle);
-  res.proximity_classification = predicate_classifier_map["proximity"](req.proximity.object_one_pose, req.proximity.object_two_pose, req.proximity.threshold_distance);
+bool run_classifier(predicate_classification_msgs::PredicateClassification::Request  &req, predicate_classification_msgs::PredicateClassification::Response &res)
+{ 
+  res.upright_classification = predicate_classifiers::upright(req.upright.upright_pose, req.upright.current_pose, req.upright.threshold_angle);
+  res.proximity_classification = predicate_classifiers::proximity(req.proximity.object_one_pose, req.proximity.object_two_pose, req.proximity.threshold_distance);
+  res.height_classification = predicate_classifiers::height(req.height.object_pose, req.height.reference_height, req.height.threshold_distance);
 
   return true;
 }
