@@ -5,9 +5,13 @@
 
 bool run_classifier(predicate_classification_msgs::PredicateClassification::Request  &req, predicate_classification_msgs::PredicateClassification::Response &res)
 { 
-  res.upright_classification = predicate_classifiers::upright(req.upright.upright_pose, req.upright.current_pose, req.upright.threshold_angle);
-  res.proximity_classification = predicate_classifiers::proximity(req.proximity.object_one_pose, req.proximity.object_two_pose, req.proximity.threshold_distance);
-  res.height_classification = predicate_classifiers::height(req.height.object_pose, req.height.reference_height, req.height.threshold_distance);
+  predicate_classifiers::ProximityClassifier proximity_classifer = predicate_classifiers::ProximityClassifier();
+  predicate_classifiers::UprightClassifier upright_classifer = predicate_classifiers::UprightClassifier();
+  predicate_classifiers::HeightClassifier height_classifer = predicate_classifiers::HeightClassifier();
+
+  res.upright_classification = upright_classifer.classify(req.upright.upright_pose, req.upright.current_pose, req.upright.threshold_angle);
+  res.proximity_classification = proximity_classifer.classify(req.proximity.object_one_pose, req.proximity.object_two_pose, req.proximity.threshold_distance);
+  res.height_classification = height_classifer.classify(req.height.object_pose, req.height.reference_height, req.height.threshold_distance);
 
   return true;
 }

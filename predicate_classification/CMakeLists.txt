@@ -9,7 +9,6 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
   tf2
   message_generation
   std_msgs
@@ -25,6 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
  INCLUDE_DIRS include
+ LIBRARIES predicate_classifiers
  CATKIN_DEPENDS message_runtime std_msgs geometry_msgs predicate_classification_msgs
  )
 
