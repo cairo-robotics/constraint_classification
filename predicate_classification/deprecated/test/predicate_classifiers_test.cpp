@@ -178,9 +178,9 @@ TEST(Upright, angleUprightNoRotation)
   upright_pose.position.y = 0.0;
   upright_pose.position.z = 0.0;
   upright_pose.orientation.x = 0.0;
-  upright_pose.orientation.y = -0.38270469415797664;
+  upright_pose.orientation.y = 0.1736709;
   upright_pose.orientation.z = 0.0;
-  upright_pose.orientation.w = 0.9238707253016787;
+  upright_pose.orientation.w = 0.9848037;
 
   // R: 0, P: 45, Y: 0
   current_pose.position.x = 0.0;

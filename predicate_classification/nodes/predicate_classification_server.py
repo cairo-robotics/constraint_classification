@@ -4,6 +4,7 @@ import rospy
 from predicate_classification.predicate_classifiers import height, upright, proximity
 from predicate_classification_msgs.srv import PredicateClassification
 
+
 def run_classifier(req):
     response = {
         "upright_classification": upright(req.upright.upright_pose, req.upright.current_pose, req.upright.threshold_angle),
@@ -13,10 +14,11 @@ def run_classifier(req):
 
     return response
 
+
 def predicate_classification_server():
     rospy.init_node('predicate_classification_server')
     s = rospy.Service('predicate_classification_server', PredicateClassification, run_classifier)
-    print "Ready to add two ints."
+    print "Predicate classification server running..."
     rospy.spin()
 
 if __name__ == "__main__":

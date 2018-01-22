@@ -32,11 +32,8 @@ catkin_package(
 ## Testing ##
 #############
 
-# if(CATKIN_ENABLE_TESTING)
-#   add_rostest_gtest(predicate_classification_test ${PROJECT_SOURCE_DIR}/test/predicate_classification.test ${PROJECT_SOURCE_DIR}/test/predicate_classification_service_test.cpp)
-#   add_rostest_gtest(predicate_classifiers_test ${PROJECT_SOURCE_DIR}/test/predicate_classifiers.test ${PROJECT_SOURCE_DIR}/test/predicate_classifiers_test.cpp)
-#   add_dependencies(predicate_classification_test ${catkin_EXPORTED_TARGETS})
-#   add_dependencies(predicate_classifiers_test ${catkin_EXPORTED_TARGETS})
-#   target_link_libraries(predicate_classification_test ${catkin_LIBRARIES} predicate_classifiers)
-#   target_link_libraries(predicate_classifiers_test ${catkin_LIBRARIES} predicate_classifiers)
-# endif()
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest(test/predicate_classifiers.test)
+  catkin_add_nosetests(test/predicate_classifiers_test.py)
+endif()
