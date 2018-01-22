@@ -76,7 +76,7 @@ namespace predicate_classifiers
 
   bool height(geometry_msgs::Pose object_pose, float reference_height, float threshold_distance)
   {
-    float object_height = object_pose.orientation.z;
+    float object_height = object_pose.position.z;
 
     float difference = object_height - reference_height;
 
