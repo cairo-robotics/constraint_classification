@@ -1,4 +1,0 @@
-<launch>
-  <node pkg="predicate_classification" type="predicate_classification_server" name="predicate_classification_server" required="true"/>
-  <test test-name="predicate_classification_server_test" pkg="predicate_classification" type="test/predicate_classification_server_test.py"/>
-</launch>

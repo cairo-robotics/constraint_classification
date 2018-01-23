@@ -34,8 +34,6 @@ catkin_package(
 
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
-  add_rostest(test/predicate_classifiers.test)
-  add_rostest(test/predicate_classification_server.test)
-  catkin_add_nosetests(test/predicate_classifiers_test.py)
-  catkin_add_nosetests(test/predicate_classification_server_test.py)
+  add_rostest(src/test/predicate_classification_server.test)
+  add_rostest(src/test/predicate_classifiers.test)
 endif()

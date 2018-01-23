@@ -87,9 +87,9 @@ class TestPredicateClassificationServer(unittest.TestCase):
         height_msg.reference_height = 0.0
 
         results = predicate_classification_client(upright_msg, proximity_msg, height_msg)
-        self.assertEquals(result.upright_classification, 1)
-        self.assertEquals(result.proximity_classification, 1)
-        self.assertEquals(result.height_classification, 1)
+        self.assertEquals(results.upright_classification, 1)
+        self.assertEquals(results.proximity_classification, 1)
+        self.assertEquals(results.height_classification, 1)
 
     def test_false_classifications(self):
 
@@ -157,11 +157,11 @@ class TestPredicateClassificationServer(unittest.TestCase):
         height_msg.reference_height = 0.0
 
         results = predicate_classification_client(upright_msg, proximity_msg, height_msg)
-        self.assertEquals(result.upright_classification, 0)
-        self.assertEquals(result.proximity_classification, 0)
-        self.assertEquals(result.height_classification, 0)
+        self.assertEquals(results.upright_classification, 0)
+        self.assertEquals(results.proximity_classification, 0)
+        self.assertEquals(results.height_classification, 0)
 
 
 if __name__ == "__main__":
     import rostest
-    rostest.rosrun('predicate_classification', 'test_predicate_classification_server', TestPredicateClassificationServer)
+    rostest.rosrun('predicate_classification', 'test_predicate_classification_server', __name__, sys.argv)

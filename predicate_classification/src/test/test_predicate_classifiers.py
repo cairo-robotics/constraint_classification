@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import unittest
 from geometry_msgs.msg import Pose
 from predicate_classification.predicate_classifiers import height, upright, proximity
@@ -347,6 +348,4 @@ class TestHeightClassifier(unittest.TestCase):
 
 if __name__ == '__main__':
     import rosunit
-    rosunit.unitrun('predicate_classication', 'test_upright_classifier', TestUprightClassifier)
-    rosunit.unitrun('predicate_classication', 'test_proximity_classifier', TestProximityClassifier)
-    rosunit.unitrun('predicate_classication', 'test_height_classifier', TestHeightClassifier)
+    rosunit.unitrun('predicate_classication', 'test_upright_classifier', __name__, sys.argv)
