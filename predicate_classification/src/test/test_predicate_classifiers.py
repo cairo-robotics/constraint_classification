@@ -193,6 +193,68 @@ class TestUprightClassifier(unittest.TestCase):
 
         self.assertEquals(result, 0)
 
+    def test_x_axis_rotation_around_z(self):
+        upright_pose = Pose()
+        upright_pose.position.x = 0.0
+        upright_pose.position.y = 0.0
+        upright_pose.position.z = 0.0
+        upright_pose.orientation.x = 0.712590112587
+        upright_pose.orientation.y = -0.00994445446764
+        upright_pose.orientation.z = 0.701496927312
+        upright_pose.orientation.w = -0.00430119065513
+
+        current_pose = Pose()
+        current_pose.position.x = 0.0
+        current_pose.position.y = 0.0
+        current_pose.position.z = 0.0
+        current_pose.orientation.x = -0.497165522925
+        current_pose.orientation.y = 0.508076415174
+        current_pose.orientation.z = -0.499403654355
+        current_pose.orientation.w = 0.495258305509
+
+        threshold_angle = 95
+
+        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+
+        self.assertEquals(result, 1)
+
+        threshold_angle = 85
+
+        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+
+        self.assertEquals(result, 0)
+
+    def test_x_axis_diagonal_rotation(self):
+        upright_pose = Pose()
+        upright_pose.position.x = 0.0
+        upright_pose.position.y = 0.0
+        upright_pose.position.z = 0.0
+        upright_pose.orientation.x = 0.712590112587
+        upright_pose.orientation.y = -0.00994445446764
+        upright_pose.orientation.z = 0.701496927312
+        upright_pose.orientation.w = -0.00430119065513
+
+        current_pose = Pose()
+        current_pose.position.x = 0.0
+        current_pose.position.y = 0.0
+        current_pose.position.z = 0.0
+        current_pose.orientation.x = 0.888835870709
+        current_pose.orientation.y = -0.277907278582
+        current_pose.orientation.z = 0.349356863595
+        current_pose.orientation.w = 0.103383370571
+
+        threshold_angle = 50
+
+        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+
+        self.assertEquals(result, 1)
+
+        threshold_angle = 40
+
+        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+
+        self.assertEquals(result, 0)
+
 
 class TestProximityClassifier(unittest.TestCase):
 
