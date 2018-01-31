@@ -24,9 +24,14 @@ def get_euclidean_distance(x1, y1, z1, x2, y2, z2):
     return np.sqrt(pow(delta_x, 2) + pow(delta_y, 2) + pow(delta_z, 2))
 
 
-def upright(upright_pose, current_pose, threshold_angle):
+def upright(upright_pose, current_pose, threshold_angle, axis="z"):
 
-    ref_vec = np.array([0., 0., 1.]) # Unit vector in the +z direction
+    if axis is "x":
+        ref_vec = np.array([1., 0., 0.]) # Unit vector in the +x direction
+    if axis is "y":
+        ref_vec = np.array([0., 1., 0.]) # Unit vector in the +y direction
+    if axis is "z":
+        ref_vec = np.array([0., 0., 1.]) # Unit vector in the +z direction
     upright_q = Quaternion(upright_pose.orientation.w,
                            upright_pose.orientation.x, 
                            upright_pose.orientation.y, 
@@ -42,7 +47,7 @@ def upright(upright_pose, current_pose, threshold_angle):
     angle = np.rad2deg(angle_between(upright_vec, current_vec))
 
     rospy.loginfo("Angle of devation from upright pose to current pose: {}".format(angle))
-
+    print(angle)
     # Classification
     if angle < threshold_angle:
         return 1
