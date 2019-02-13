@@ -3,7 +3,7 @@
 import sys
 import unittest
 from geometry_msgs.msg import Pose
-from predicate_classification.predicate_classifiers import height, upright, proximity
+from predicate_classification.pose_classifiers import height, upright, proximity, over_under
 
 
 class TestUprightClassifier(unittest.TestCase):
@@ -31,7 +31,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 25
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 0)
 
     def test_upright_pitch_and_roll(self):
@@ -57,7 +56,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 25
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 1)
 
     def test_not_upright_pitch_and_roll(self):
@@ -83,7 +81,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 25
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 0)
 
     def test_yaw_has_no_effect(self):
@@ -109,7 +106,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 5
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 1)
 
     def test_angled_upright_pitch_only(self):
@@ -136,7 +132,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 26
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 1)
 
     def test_angled_upright_no_rotation(self):
@@ -163,7 +158,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 20
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 0)
 
     def test_angled_upright_with_roll_pitch_yaw(self):
@@ -190,7 +184,6 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 10
 
         result = upright(upright_pose, current_pose, threshold_angle)
-
         self.assertEquals(result, 0)
 
     def test_x_axis_rotation_around_z(self):
@@ -215,13 +208,11 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 95
 
         result = upright(upright_pose, current_pose, threshold_angle, axis="x")
-
         self.assertEquals(result, 1)
 
         threshold_angle = 85
 
         result = upright(upright_pose, current_pose, threshold_angle, axis="x")
-
         self.assertEquals(result, 0)
 
     def test_x_axis_diagonal_rotation(self):
@@ -246,13 +237,11 @@ class TestUprightClassifier(unittest.TestCase):
         threshold_angle = 50
 
         result = upright(upright_pose, current_pose, threshold_angle, axis="x")
-
         self.assertEquals(result, 1)
 
         threshold_angle = 40
 
         result = upright(upright_pose, current_pose, threshold_angle, axis="x")
-
         self.assertEquals(result, 0)
 
 
@@ -279,7 +268,6 @@ class TestProximityClassifier(unittest.TestCase):
         threshold_distance = 1.0
 
         result = proximity(object_one_pose, object_two_pose, threshold_distance)
-
         self.assertEquals(result, 1)
 
     def test_within_threhsold(self):
@@ -304,7 +292,6 @@ class TestProximityClassifier(unittest.TestCase):
         threshold_distance = 3.0
 
         result = proximity(object_one_pose, object_two_pose, threshold_distance)
-
         self.assertEquals(result, 1)
 
     def test_outside_threshold(self):
@@ -329,7 +316,6 @@ class TestProximityClassifier(unittest.TestCase):
         threshold_distance = 1.0
 
         result = proximity(object_one_pose, object_two_pose, threshold_distance)
-
         self.assertEquals(result, 0)
 
 
@@ -346,11 +332,9 @@ class TestHeightClassifier(unittest.TestCase):
         object_pose.orientation.w = 1.0
 
         reference_height = 1.0
-
         threshold_distance = 4.0
 
         result = height(object_pose, reference_height, threshold_distance)
-
         self.assertEquals(result, 0)
 
     def test_below_within_threshold(self):
@@ -364,11 +348,9 @@ class TestHeightClassifier(unittest.TestCase):
         object_pose.orientation.w = 1.0
 
         reference_height = 0.0
-
         threshold_distance = 4.0
 
         result = height(object_pose, reference_height, threshold_distance)
-
         self.assertEquals(result, 0)
 
     def test_above_outside_threshold(self):
@@ -382,11 +364,9 @@ class TestHeightClassifier(unittest.TestCase):
         object_pose.orientation.w = 1.0
 
         reference_height = 2.0
-
         threshold_distance = 3.0
 
         result = height(object_pose, reference_height, threshold_distance)
-
         self.assertEquals(result, 1)
 
     def test_below_outside_threshold(self):
@@ -400,12 +380,364 @@ class TestHeightClassifier(unittest.TestCase):
         object_pose.orientation.w = 1.0
 
         reference_height = -1.0
-
         threshold_distance = 2.0
 
         result = height(object_pose, reference_height, threshold_distance)
-
         self.assertEquals(result, 1)
+
+    def test_above_within_threshold_x_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 2.0
+        object_pose.position.y = 0.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = 1.0
+        threshold_distance = 4.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='x')
+        self.assertEquals(result, 0)
+
+    def test_below_within_threshold_x_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = -2.0
+        object_pose.position.y = 0.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = -1.0
+        threshold_distance = 4.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='x')
+        self.assertEquals(result, 0)
+
+    def test_above_outside_threshold_x_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 5.0
+        object_pose.position.y = 0.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = 2.0
+        threshold_distance = 3.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='x')
+        self.assertEquals(result, 1)
+
+    def test_below_outside_threshold_x_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = -5.0
+        object_pose.position.y = 0.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = -1.0
+        threshold_distance = 2.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='x')
+        self.assertEquals(result, 1)
+
+    def test_above_within_threshold_y_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 0.0
+        object_pose.position.y = 3.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = 1.0
+        threshold_distance = 4.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='y')
+        self.assertEquals(result, 0)
+
+    def test_below_within_threshold_y_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 0.0
+        object_pose.position.y = -3.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = -1.0
+        threshold_distance = 4.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='y')
+        self.assertEquals(result, 0)
+
+    def test_above_outside_threshold_y_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 0.0
+        object_pose.position.y = 5.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = 2.0
+        threshold_distance = 3.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='y')
+        self.assertEquals(result, 1)
+
+    def test_below_outside_threshold_y_axis(self):
+        object_pose = Pose()
+        object_pose.position.x = 0.0
+        object_pose.position.y = 5.0
+        object_pose.position.z = 0.0
+        object_pose.orientation.x = 0.0
+        object_pose.orientation.y = 0.0
+        object_pose.orientation.z = 0.0
+        object_pose.orientation.w = 1.0
+
+        reference_height = -1.0
+        threshold_distance = 2.0
+
+        result = height(object_pose, reference_height, threshold_distance, axis='y')
+        self.assertEquals(result, 1)
+
+
+class TestOverUnderClassifier(unittest.TestCase):
+
+    def test_above_within_threshold(self):
+        above_pose = Pose()
+        above_pose.position.x = 1.2
+        above_pose.position.y = 1.2
+        above_pose.position.z = 1.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 3.0
+
+        result = over_under(above_pose, below_pose, threshold_distance)
+        self.assertEquals(result, 1)
+
+    def test_above_outside_threshold(self):
+        above_pose = Pose()
+        above_pose.position.x = 1.0
+        above_pose.position.y = 3.0
+        above_pose.position.z = 1.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 1.0
+
+        result = over_under(above_pose, below_pose, threshold_distance)
+        self.assertEquals(result, 0)
+
+    def test_below(self):
+        above_pose = Pose()
+        above_pose.position.x = 0.0
+        above_pose.position.y = 0.0
+        above_pose.position.z = 0.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = -1.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 1.0
+
+        result = over_under(above_pose, below_pose, threshold_distance)
+        self.assertEquals(result, 0)
+
+    def test_above_within_threshold_x_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = 1.0
+        above_pose.position.y = 1.2
+        above_pose.position.z = 1.2
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 3.5
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='x')
+        self.assertEquals(result, 1)
+
+    def test_above_outside_threshold_x_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = 1.0
+        above_pose.position.y = 3.0
+        above_pose.position.z = 2.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 2.0
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='x')
+        self.assertEquals(result, 0)
+
+    def test_below_x_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = -1.0
+        above_pose.position.y = 0.0
+        above_pose.position.z = 0.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = -0.043616403098766035
+
+        threshold_distance = 1.0
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='x')
+        self.assertEquals(result, 0)
+
+    def test_above_within_threshold_y_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = 0.0
+        above_pose.position.y = 1.0
+        above_pose.position.z = 1.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = 1.0
+
+        threshold_distance = 2.5
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='y')
+        self.assertEquals(result, 1)
+
+    def test_above_outside_threshold_y_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = 0.0
+        above_pose.position.y = 0.0
+        above_pose.position.z = 1.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 3.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = -0.043616403098766035
+
+        threshold_distance = 1.0
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='y')
+        self.assertEquals(result, 0)
+
+    def test_below_y_axis(self):
+        above_pose = Pose()
+        above_pose.position.x = 0.0
+        above_pose.position.y = 0.0
+        above_pose.position.z = 0.0
+        above_pose.orientation.x = 0.0
+        above_pose.orientation.y = 0.0
+        above_pose.orientation.z = 0.0
+        above_pose.orientation.w = 1.0
+
+        # R: 0, P: 175, Y: 0
+        below_pose = Pose()
+        below_pose.position.x = 0.0
+        below_pose.position.y = 0.0
+        below_pose.position.z = 0.0
+        below_pose.orientation.x = 0.0
+        below_pose.orientation.y = 0.0
+        below_pose.orientation.z = 0.0
+        below_pose.orientation.w = -0.043616403098766035
+
+        threshold_distance = 25
+
+        result = over_under(above_pose, below_pose, threshold_distance, axis='y')
+        self.assertEquals(result, 0)
 
 
 if __name__ == '__main__':

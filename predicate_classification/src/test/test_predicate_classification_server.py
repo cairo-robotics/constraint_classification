@@ -5,7 +5,7 @@ import rospy
 import unittest
 from predicate_classification_msgs.srv import PredicateClassification
 from predicate_classification_msgs.msg import Upright, Proximity, Height
-from predicate_classification.predicate_classifiers import height, upright, proximity
+from predicate_classification.pose_classifiers import height, upright, proximity
 from geometry_msgs.msg import Pose
 
 
