@@ -35,5 +35,5 @@ catkin_package(
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(src/test/predicate_classification_server.test)
-  add_rostest(src/test/predicate_classifiers.test)
+  add_rostest(src/test/pose_classifiers.test)
 endif()

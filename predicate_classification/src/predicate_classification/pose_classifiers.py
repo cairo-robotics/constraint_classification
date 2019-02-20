@@ -56,7 +56,7 @@ def upright(upright_pose, current_pose, threshold_angle, axis="z"):
 
 def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     """
-    Determines whether or not the above_pose is, indeed, above the below pose.
+    Determines whether one pose is above another pose given a threshold distance of deviation.
 
     Parameters
     ----------
@@ -109,7 +109,7 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
 
 def proximity(object1_pose, object2_pose, threshold_distance):
     """
-    Determines whether or not a current_pose is upright given the parameterizations.
+    Determines whether or not are in proximity with each other.
 
     Parameters
     ----------
@@ -119,8 +119,6 @@ def proximity(object1_pose, object2_pose, threshold_distance):
         Current pose.
     threshold_distance : float/int
         Threshold distance within two objects are in proximity.
-    axis : str
-        Axis against which to measure deviation.
 
     Returns
     -------
