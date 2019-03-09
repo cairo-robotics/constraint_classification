@@ -1,4 +1,4 @@
 
 
-def bounded_perimeter_path(point, perimeter, range):
+def perimeter(pose, inner_polygon, outer_polygon, axis="z"):
     pass
