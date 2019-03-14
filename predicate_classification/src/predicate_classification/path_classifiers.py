@@ -1,5 +1,6 @@
 from predicate_classification.utils import pt_in_polygon
 
+
 def perimeter(pose, inner_polygon, outer_polygon, axis="z"):
 	"""
     Given coordinates of closed 2D polygon with a hole in the center, determines whether set of 2D coordinates is within polygon boundaries

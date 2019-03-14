@@ -45,7 +45,8 @@ def upright(upright_pose, current_pose, threshold_angle, axis="z"):
     current_vec = current_q.rotate(ref_vec)
     angle = np.rad2deg(angle_between(upright_vec, current_vec))
 
-    rospy.logdebug("Angle of deviation from upright pose to current pose: {}".format(angle))
+    rospy.logdebug(
+        "Angle of deviation from upright pose to current pose: {}".format(angle))
 
     # Classification
     if angle < threshold_angle:
@@ -84,17 +85,20 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
 
     if axis == "x":
         if o1_x > o2_x:
-            distance = np.linalg.norm(np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
+            distance = np.linalg.norm(
+                np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
         else:
             return 0
     if axis == "y":
         if o1_y > o2_y:
-            distance = np.linalg.norm(np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
+            distance = np.linalg.norm(
+                np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
         else:
             return 0
     if axis == "z":
         if o1_z > o2_z:
-            distance = np.linalg.norm(np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
+            distance = np.linalg.norm(
+                np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
         else:
             return 0
 
@@ -133,7 +137,8 @@ def proximity(object1_pose, object2_pose, threshold_distance):
     o2_y = object2_pose.position.y
     o2_z = object2_pose.position.z
 
-    distance = np.linalg.norm(np.array([o1_x, o1_y, o1_z]) - np.array([o2_x, o2_y, o2_z]))
+    distance = np.linalg.norm(
+        np.array([o1_x, o1_y, o1_z]) - np.array([o2_x, o2_y, o2_z]))
 
     rospy.logdebug("Distance between objects: {}".format(distance))
 

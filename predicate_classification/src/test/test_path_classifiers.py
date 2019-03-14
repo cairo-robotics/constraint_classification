@@ -290,5 +290,6 @@ class TestPerimeterConstraint(unittest.TestCase):
 		self.assertEquals(result3, 0)
 
 if __name__ == '__main__':
-	import rosunit
-	rosunit.unitrun('predicate_classification', 'test_perimeter_constraint', __name__, sys.argv)
+    import rosunit
+    rosunit.unitrun('predicate_classification',
+                    'test_perimeter_constraint', __name__, sys.argv)
