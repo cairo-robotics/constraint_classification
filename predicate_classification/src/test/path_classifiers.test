@@ -1,0 +1,3 @@
+<launch>
+  <test test-name="test_path_classifiers" pkg="predicate_classification" type="test_path_classifiers.py"/>
+</launch>
