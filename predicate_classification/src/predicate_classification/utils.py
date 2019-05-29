@@ -41,7 +41,23 @@ def angle_between(v1, v2):
 # Source: http://www.ariel.com.au/a/python-point-int-poly.html
 
 
-def pt_in_polygon(x, y, poly):
+def point_in_polygon(x, y, poly):
+    """
+    Given coordinates of closed 2D polygon, determines whether set of 2D coordinates is within polygon boundaries.
+
+    Parameters
+    ----------
+    x : float / int
+        First coordinate in the plane of the polygon
+    x : float / int
+        First coordinate in the plane of the polygon
+    poly: list
+        List of tuples (x,y) specifying boundary of polygon
+    Returns
+    -------
+    inside : bool
+        True if coordinates are inside polygon, False otherwise.
+    """
     n = len(poly)
     inside = False
 
