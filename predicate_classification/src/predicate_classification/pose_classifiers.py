@@ -58,6 +58,9 @@ def upright(upright_pose, current_pose, threshold_angle, axis="z"):
 def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     """
     Determines whether one pose is above another pose given a threshold distance of deviation.
+    The threshold distance of deviation means the radial distance around the vertical axis that
+    determines if the classifier will register as true of false. The above object must have a greater
+    positional value for the given axis dimension.
 
     Parameters
     ----------
@@ -73,7 +76,7 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     Returns
     -------
     : int
-        1 if within threshold angle (upright), 0 otherwise.
+        1 if above_pose is above the below_pose within a radial distance, 0 otherwise.
     """
     o1_x = above_pose.position.x
     o1_y = above_pose.position.y
@@ -104,7 +107,6 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
 
     rospy.logdebug("Distance between objects: {}".format(distance))
 
-    print(distance)
     if distance < threshold_distance:
         return 1
     else:
