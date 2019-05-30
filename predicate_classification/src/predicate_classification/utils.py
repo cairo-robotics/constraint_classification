@@ -52,7 +52,7 @@ def point_in_polygon(x, y, poly):
     x : float / int
         First coordinate in the plane of the polygon
     poly: list
-        List of tuples (x,y) specifying boundary of polygon
+        List of tuples (x, y) specifying boundary of polygon
     Returns
     -------
     inside : bool
