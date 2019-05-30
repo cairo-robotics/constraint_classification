@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+import sys
+import unittest
+from geometry_msgs.msg import Pose
+from predicate_classification.pose_classifiers import height, upright, proximity, over_under
+
+
+class TestUprightClassifier(unittest.TestCase):
+
+	def test_square_perimeter():
+		
