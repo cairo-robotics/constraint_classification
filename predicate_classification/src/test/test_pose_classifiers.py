@@ -353,7 +353,7 @@ class TestHeightClassifier(unittest.TestCase):
         reference_height = 0.0
         threshold_distance = 4.0
 
-        result = height(object_pose, reference_height, threshold_distance)
+        result = height(object_pose, reference_height, threshold_distance, direction="negative")
         self.assertEquals(result, 0)
 
     def test_above_outside_threshold(self):
@@ -385,7 +385,7 @@ class TestHeightClassifier(unittest.TestCase):
         reference_height = -1.0
         threshold_distance = 2.0
 
-        result = height(object_pose, reference_height, threshold_distance)
+        result = height(object_pose, reference_height, threshold_distance, direction="negative")
         self.assertEquals(result, 1)
 
     def test_above_within_threshold_x_axis(self):
@@ -402,7 +402,7 @@ class TestHeightClassifier(unittest.TestCase):
         threshold_distance = 4.0
 
         result = height(object_pose, reference_height,
-                        threshold_distance, axis='x')
+                        threshold_distance, direction="negative", axis='x')
         self.assertEquals(result, 0)
 
     def test_below_within_threshold_x_axis(self):
@@ -419,7 +419,7 @@ class TestHeightClassifier(unittest.TestCase):
         threshold_distance = 4.0
 
         result = height(object_pose, reference_height,
-                        threshold_distance, axis='x')
+                        threshold_distance, direction="negative", axis='x')
         self.assertEquals(result, 0)
 
     def test_above_outside_threshold_x_axis(self):
@@ -453,7 +453,7 @@ class TestHeightClassifier(unittest.TestCase):
         threshold_distance = 2.0
 
         result = height(object_pose, reference_height,
-                        threshold_distance, axis='x')
+                        threshold_distance, direction="negative", axis='x')
         self.assertEquals(result, 1)
 
     def test_above_within_threshold_y_axis(self):

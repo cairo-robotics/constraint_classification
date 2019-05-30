@@ -105,8 +105,8 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
         else:
             return 0
 
-    rospy.logdebug("Distance between objects: {}".format(distance))
-
+    rospy.loginfo("Distance between objects: {}".format(distance))
+    print(distance)
     if distance < threshold_distance:
         return 1
     else:
@@ -150,7 +150,7 @@ def proximity(object1_pose, object2_pose, threshold_distance):
         return 0
 
 
-def height(object_pose, reference_height, threshold_distance, axis="z"):
+def height(object_pose, reference_height, threshold_distance, direction="positive", axis="z"):
     """
     Determines whether or an object's pose is above a reference height.
 
@@ -178,10 +178,19 @@ def height(object_pose, reference_height, threshold_distance, axis="z"):
         object_height = object_pose.position.z
 
     difference = fabs(object_height - reference_height)
-
     rospy.logdebug("Height differential: {}".format(difference))
-
-    if difference >= threshold_distance:
-        return 1
+    if direction == "positive":
+        if object_height >= reference_height and difference >= threshold_distance:
+            return 1
+        else:
+            return 0
+    elif direction == "negative":
+        if object_height <= reference_height and difference >= threshold_distance:
+            return 1
+        else:
+            return 0
     else:
-        return 0
+        raise ValueError("'direction' parameter must either be 'positive' or 'negative'")
+    
+
+
