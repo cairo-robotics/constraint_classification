@@ -5,25 +5,25 @@ from math import fabs
 from predicate_classification.utils import angle_between
 
 
-def upright(upright_pose, current_pose, threshold_angle, axis="z"):
+def orientation(orientation_pose, current_pose, threshold_angle, axis="z"):
     """
-    Determines whether or not a current_pose is upright given the parameterizations.
+    Determines whether or not a current_pose is within a given orientation given the parameterizations.
 
     Parameters
     ----------
-    upright_pose : geometry_msgs/Pose
-        The upright pose.
+    orientation_pose : geometry_msgs/Pose
+        The correct orientation pose.
     current_pose : geometry_msgs/Pose
         Current pose.
     threshold_angle : float/int
-        Threshold angle within which the angle of deviation indicates the pose is upright.
+        Threshold angle within which the angle of deviation indicates the pose is correct.
     axis : str
         Axis against which to measure deviation.
 
     Returns
     -------
     : int
-        1 if within threshold angle (upright), 0 otherwise.
+        1 if within threshold angle, 0 otherwise.
     """
     if axis == "x":
         ref_vec = np.array([1., 0., 0.])  # Unit vector in the +x direction
@@ -31,22 +31,22 @@ def upright(upright_pose, current_pose, threshold_angle, axis="z"):
         ref_vec = np.array([0., 1., 0.])  # Unit vector in the +y direction
     else:
         ref_vec = np.array([0., 0., 1.])  # Unit vector in the +z direction
-    upright_q = Quaternion(upright_pose.orientation.w,
-                           upright_pose.orientation.x,
-                           upright_pose.orientation.y,
-                           upright_pose.orientation.z)
+    correct_q = Quaternion(orientation_pose.orientation.w,
+                           orientation_pose.orientation.x,
+                           orientation_pose.orientation.y,
+                           orientation_pose.orientation.z)
 
     current_q = Quaternion(current_pose.orientation.w,
                            current_pose.orientation.x,
                            current_pose.orientation.y,
                            current_pose.orientation.z)
 
-    upright_vec = upright_q.rotate(ref_vec)
+    correct_vec = correct_q.rotate(ref_vec)
     current_vec = current_q.rotate(ref_vec)
-    angle = np.rad2deg(angle_between(upright_vec, current_vec))
-
+    angle = np.rad2deg(angle_between(correct_vec, current_vec))
+    print(angle)
     rospy.logdebug(
-        "Angle of deviation from upright pose to current pose: {}".format(angle))
+        "Angle of deviation from correct orientation pose to current pose: {}".format(angle))
 
     # Classification
     if angle < threshold_angle:
@@ -86,6 +86,9 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     o2_y = below_pose.position.y
     o2_z = below_pose.position.z
 
+    print(above_pose.position)
+    print(below_pose.position)
+
     if axis == "x":
         if o1_x > o2_x:
             distance = np.linalg.norm(
@@ -95,17 +98,17 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     if axis == "y":
         if o1_y > o2_y:
             distance = np.linalg.norm(
-                np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
+                np.array([o1_x, o1_z]) - np.array([o2_x, o2_z]))
         else:
             return 0
     if axis == "z":
         if o1_z > o2_z:
             distance = np.linalg.norm(
-                np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
+                np.array([o1_x, o1_y]) - np.array([o2_x, o2_y]))
         else:
             return 0
 
-    rospy.loginfo("Distance between objects: {}".format(distance))
+    rospy.logdebug("Distance from centerline: {}".format(distance)) 
     print(distance)
     if distance < threshold_distance:
         return 1
