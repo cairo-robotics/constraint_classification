@@ -3,20 +3,20 @@
 import sys
 import unittest
 from geometry_msgs.msg import Pose
-from predicate_classification.pose_classifiers import height, upright, proximity, over_under
+from predicate_classification.pose_classifiers import height, orientation, proximity, over_under
 
 
-class TestUprightClassifier(unittest.TestCase):
+class TestOrientationClassifier(unittest.TestCase):
 
     def test_upside_down(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = 0.0
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 1.0
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = 0.0
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 1.0
 
         # R: 0, P: 175, Y: 0
         current_pose = Pose()
@@ -30,18 +30,18 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 25
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 0)
 
-    def test_upright_pitch_and_roll(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = 0.0
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 1.0
+    def test_orientation_pitch_and_roll(self):
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = 0.0
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 1.0
 
         # R: 10, P: 10, Y: 0
         current_pose = Pose()
@@ -55,18 +55,18 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 25
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 1)
 
-    def test_not_upright_pitch_and_roll(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = 0.0
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 1.0
+    def test_not_orientation_pitch_and_roll(self):
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = 0.0
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 1.0
 
         # R: 35, P:-15, Y: 0
         current_pose = Pose()
@@ -80,18 +80,18 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 25
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 0)
 
     def test_yaw_has_no_effect(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = 0.0
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 1.0
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = 0.0
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 1.0
 
         # R: 0, P: 0, Y: 20
         current_pose = Pose()
@@ -105,19 +105,19 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 5
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 1)
 
-    def test_angled_upright_pitch_only(self):
+    def test_angled_orientation_pitch_only(self):
         # R: 0, P: 20, Y: 0
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = -0.17367092187156372
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 0.9848037423244701
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = -0.17367092187156372
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 0.9848037423244701
 
         # R: 0, P: 45, Y: 0
         current_pose = Pose()
@@ -131,19 +131,19 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 26
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 1)
 
-    def test_angled_upright_no_rotation(self):
+    def test_angled_orientation_no_rotation(self):
         # R: 0, P: 20, Y: 0
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.0
-        upright_pose.orientation.y = 0.1736709
-        upright_pose.orientation.z = 0.0
-        upright_pose.orientation.w = 0.9848037
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.0
+        orientation_pose.orientation.y = 0.1736709
+        orientation_pose.orientation.z = 0.0
+        orientation_pose.orientation.w = 0.9848037
 
         # R: 0, P: 45, Y: 0
         current_pose = Pose()
@@ -157,19 +157,19 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 20
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 0)
 
-    def test_angled_upright_with_roll_pitch_yaw(self):
+    def test_angled_orientation_with_roll_pitch_yaw(self):
         # R: 20, P: 10, Y: 10
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = -0.07043066500709379
-        upright_pose.orientation.y = -0.10057509181462758
-        upright_pose.orientation.z = 0.16484914083814878
-        upright_pose.orientation.w = 0.9786464801439086
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = -0.07043066500709379
+        orientation_pose.orientation.y = -0.10057509181462758
+        orientation_pose.orientation.z = 0.16484914083814878
+        orientation_pose.orientation.w = 0.9786464801439086
 
         # R: 20, P: 20, Y: 20
         current_pose = Pose()
@@ -183,18 +183,18 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 10
 
-        result = upright(upright_pose, current_pose, threshold_angle)
+        result = orientation(orientation_pose, current_pose, threshold_angle)
         self.assertEquals(result, 0)
 
     def test_x_axis_rotation_around_z(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.712590112587
-        upright_pose.orientation.y = -0.00994445446764
-        upright_pose.orientation.z = 0.701496927312
-        upright_pose.orientation.w = -0.00430119065513
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.712590112587
+        orientation_pose.orientation.y = -0.00994445446764
+        orientation_pose.orientation.z = 0.701496927312
+        orientation_pose.orientation.w = -0.00430119065513
 
         current_pose = Pose()
         current_pose.position.x = 0.0
@@ -207,23 +207,23 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 95
 
-        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+        result = orientation(orientation_pose, current_pose, threshold_angle, axis="x")
         self.assertEquals(result, 1)
 
         threshold_angle = 85
 
-        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+        result = orientation(orientation_pose, current_pose, threshold_angle, axis="x")
         self.assertEquals(result, 0)
 
     def test_x_axis_diagonal_rotation(self):
-        upright_pose = Pose()
-        upright_pose.position.x = 0.0
-        upright_pose.position.y = 0.0
-        upright_pose.position.z = 0.0
-        upright_pose.orientation.x = 0.712590112587
-        upright_pose.orientation.y = -0.00994445446764
-        upright_pose.orientation.z = 0.701496927312
-        upright_pose.orientation.w = -0.00430119065513
+        orientation_pose = Pose()
+        orientation_pose.position.x = 0.0
+        orientation_pose.position.y = 0.0
+        orientation_pose.position.z = 0.0
+        orientation_pose.orientation.x = 0.712590112587
+        orientation_pose.orientation.y = -0.00994445446764
+        orientation_pose.orientation.z = 0.701496927312
+        orientation_pose.orientation.w = -0.00430119065513
 
         current_pose = Pose()
         current_pose.position.x = 0.0
@@ -236,12 +236,12 @@ class TestUprightClassifier(unittest.TestCase):
 
         threshold_angle = 50
 
-        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+        result = orientation(orientation_pose, current_pose, threshold_angle, axis="x")
         self.assertEquals(result, 1)
 
         threshold_angle = 40
 
-        result = upright(upright_pose, current_pose, threshold_angle, axis="x")
+        result = orientation(orientation_pose, current_pose, threshold_angle, axis="x")
         self.assertEquals(result, 0)
 
 
@@ -760,4 +760,4 @@ class TestOverUnderClassifier(unittest.TestCase):
 if __name__ == '__main__':
     import rosunit
     rosunit.unitrun('predicate_classication',
-                    'test_upright_classifier', __name__, sys.argv)
+                    'test_orientation_classifier', __name__, sys.argv)
