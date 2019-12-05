@@ -44,7 +44,6 @@ def orientation(orientation_pose, current_pose, threshold_angle, axis="z"):
     correct_vec = correct_q.rotate(ref_vec)
     current_vec = current_q.rotate(ref_vec)
     angle = np.rad2deg(angle_between(correct_vec, current_vec))
-    print(angle)
     rospy.logdebug(
         "Angle of deviation from correct orientation pose to current pose: {}".format(angle))
 
@@ -86,9 +85,6 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     o2_y = below_pose.position.y
     o2_z = below_pose.position.z
 
-    print(above_pose.position)
-    print(below_pose.position)
-
     if axis == "x":
         if o1_x > o2_x:
             distance = np.linalg.norm(
@@ -109,7 +105,7 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
             return 0
 
     rospy.logdebug("Distance from centerline: {}".format(distance)) 
-    print(distance)
+
     if distance < threshold_distance:
         return 1
     else:
@@ -194,6 +190,4 @@ def height(object_pose, reference_height, threshold_distance, direction="positiv
             return 0
     else:
         raise ValueError("'direction' parameter must either be 'positive' or 'negative'")
-    
-
 
