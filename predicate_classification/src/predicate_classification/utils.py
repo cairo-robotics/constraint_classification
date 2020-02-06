@@ -1,5 +1,7 @@
 import numpy as np
 
+import math
+
 
 def unit_vector(vector):
     """
@@ -37,6 +39,15 @@ def angle_between(v1, v2):
     v1_u = unit_vector(v1)
     v2_u = unit_vector(v2)
     return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
+
+
+def quaternion_to_euler(x, y, z, w):
+
+    roll = math.atan2(2 * y * w + 2 * x * z, 1 - 2 * y * y - 2 * z * z)
+    pitch = math.atan2(2 * x * w + 2 * y * z, 1 - 2 * x * x - 2 * z * z)
+    yaw = math.asin(2 * x * y + 2 * z * w)
+
+    return np.rad2deg(roll), np.rad2deg(pitch), np.rad2deg(yaw)
 
 # Source: http://www.ariel.com.au/a/python-point-int-poly.html
 
