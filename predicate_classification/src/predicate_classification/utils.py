@@ -17,7 +17,10 @@ def unit_vector(vector):
     : array-like
         The unit vector of the input vector.
     """
-    return vector / np.linalg.norm(vector)
+    if not np.all((vector == 0)):
+        return vector / np.linalg.norm(vector)
+    else:
+        return vector
 
 
 def angle_between(v1, v2):
