@@ -39,8 +39,8 @@ def cone(orientation_pose, current_pose, threshold_angle, axis):
                            current_pose.orientation.x,
                            current_pose.orientation.y,
                            current_pose.orientation.z)
-
-    q_prime = correct_q.inverse * current_q
+    correct_q_inv = correct_q.inverse if correct_q != Quaternion(0, 0, 0, 0) else correct_q
+    q_prime = correct_q_inv * current_q
 
     rot_vec = q_prime.rotate(ref_vec)
     angle = np.rad2deg(angle_between(ref_vec, rot_vec))
@@ -85,18 +85,18 @@ def twist(orientation_pose, current_pose, threshold_angle, axis="z"):
                            current_pose.orientation.x,
                            current_pose.orientation.y,
                            current_pose.orientation.z)
-
-    q_prime = current_q.inverse * correct_q
+    correct_q_inv = correct_q.inverse if correct_q != Quaternion(0, 0, 0, 0) else correct_q
+    q_prime = correct_q_inv * current_q
 
     q_prime_fixed = correct_q * q_prime * correct_q.inverse
 
-    roll, _, _ = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
-
+    _, pitch, _ = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
+    
     rospy.logdebug(
-        "Twist angle about object's {} axis: {}".format(axis, roll))
+        "Twist angle about object's {} axis: {}".format(axis, pitch))
 
     # Classification
-    if -threshold_angle <= roll and roll <= threshold_angle:
+    if -threshold_angle <= pitch and pitch <= threshold_angle:
         return 1
     else:
         return 0
@@ -134,17 +134,15 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
     o2_z = below_pose.position.z
 
     if axis == "x":
-        if o1_x > o2_x:
-            distance = np.linalg.norm(
+        # NO CHECK "ABOVE" SINCE THIS IS MORE OF A CENTERING CONSTRAINT
+        distance = np.linalg.norm(
                 np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
-        else:
-            return 0
+
     if axis == "y":
-        if o1_y > o2_y:
-            distance = np.linalg.norm(
+        # NO CHECK "ABOVE" SINCE THIS IS MORE OF A CENTERING CONSTRAINT
+        distance = np.linalg.norm(
                 np.array([o1_x, o1_z]) - np.array([o2_x, o2_z]))
-        else:
-            return 0
+
     if axis == "z":
         if o1_z > o2_z:
             distance = np.linalg.norm(
