@@ -137,18 +137,17 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
         # NO CHECK "ABOVE" SINCE THIS IS MORE OF A CENTERING CONSTRAINT
         distance = np.linalg.norm(
                 np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
-
+        
+        print([o1_y, o1_z], [o2_y, o2_z], distance)
     if axis == "y":
         # NO CHECK "ABOVE" SINCE THIS IS MORE OF A CENTERING CONSTRAINT
         distance = np.linalg.norm(
                 np.array([o1_x, o1_z]) - np.array([o2_x, o2_z]))
 
     if axis == "z":
-        if o1_z > o2_z:
-            distance = np.linalg.norm(
+        distance = np.linalg.norm(
                 np.array([o1_x, o1_y]) - np.array([o2_x, o2_y]))
-        else:
-            return 0
+  
 
     rospy.logdebug("Distance from centerline: {}".format(distance))
 
