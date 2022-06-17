@@ -46,7 +46,6 @@ def cone(orientation_pose, current_pose, threshold_angle, axis):
     angle = np.rad2deg(angle_between(ref_vec, rot_vec))
     rospy.logdebug(
         "Angle of deviation from correct orientation pose to current pose: {}".format(angle))
-
     # Classification
     if angle < threshold_angle:
         return 1
@@ -54,9 +53,9 @@ def cone(orientation_pose, current_pose, threshold_angle, axis):
         return 0
 
 
-def twist(orientation_pose, current_pose, threshold_angle, axis="z"):
+def twist(orientation_pose, current_pose, threshold_angle):
     """
-    Determines whether or not a current_pose twisted about the given axis is within a threshold angle.
+    Determines whether or not a current_pose rolled beyond a threshold angle relative to the reference quaternion.
 
     Parameters
     ----------
@@ -66,8 +65,6 @@ def twist(orientation_pose, current_pose, threshold_angle, axis="z"):
         Current pose.
     threshold_angle : float/int
         Threshold angle within which the angle of deviation indicates the pose is correct.
-    axis : str
-        Axis against which to measure deviation.
 
     Returns
     -------
@@ -90,13 +87,17 @@ def twist(orientation_pose, current_pose, threshold_angle, axis="z"):
 
     q_prime_fixed = correct_q * q_prime * correct_q.inverse
 
-    _, pitch, _ = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
     
-    rospy.logdebug(
-        "Twist angle about object's {} axis: {}".format(axis, pitch))
+    roll, pitch, yaw = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
+    
+  
+    twist_val = roll
 
+    rospy.logdebug(
+        "Twist/roll angle: {}".format(twist_val))
+    
     # Classification
-    if -threshold_angle <= pitch and pitch <= threshold_angle:
+    if abs(twist_val) <= threshold_angle:
         return 1
     else:
         return 0
@@ -138,12 +139,10 @@ def over_under(above_pose, below_pose, threshold_distance, axis="z"):
         distance = np.linalg.norm(
                 np.array([o1_y, o1_z]) - np.array([o2_y, o2_z]))
         
-        print([o1_y, o1_z], [o2_y, o2_z], distance)
     if axis == "y":
         # NO CHECK "ABOVE" SINCE THIS IS MORE OF A CENTERING CONSTRAINT
         distance = np.linalg.norm(
                 np.array([o1_x, o1_z]) - np.array([o2_x, o2_z]))
-
     if axis == "z":
         distance = np.linalg.norm(
                 np.array([o1_x, o1_y]) - np.array([o2_x, o2_y]))
