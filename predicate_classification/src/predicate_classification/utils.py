@@ -45,10 +45,12 @@ def angle_between(v1, v2):
 
 
 def quaternion_to_euler(x, y, z, w):
-
-    roll = math.atan2(2 * y * w + 2 * x * z, 1 - 2 * y * y - 2 * z * z)
-    pitch = math.atan2(2 * x * w + 2 * y * z, 1 - 2 * x * x - 2 * z * z)
-    yaw = math.asin(2 * x * y + 2 * z * w)
+    roll  = math.atan2(2.0 * (z * y + w * x) , 1.0 - 2.0 * (x * x + y * y))
+    pitch = math.asin(2.0 * (y * w - z * x))
+    yaw   = math.atan2(2.0 * (z * w + x * y) , - 1.0 + 2.0 * (w * w + x * x))
+    # roll = math.atan2(2 * y * w + 2 * x * z, 1 - 2 * y * y - 2 * z * z)
+    # pitch = math.atan2(2 * x * w + 2 * y * z, 1 - 2 * x * x - 2 * z * z)
+    # yaw = math.asin(2 * x * y + 2 * z * w)
 
     return np.rad2deg(roll), np.rad2deg(pitch), np.rad2deg(yaw)
 

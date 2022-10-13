@@ -42,12 +42,23 @@ def cone(orientation_pose, current_pose, threshold_angle, axis):
     correct_q_inv = correct_q.inverse if correct_q != Quaternion(0, 0, 0, 0) else correct_q
     q_prime = correct_q_inv * current_q
 
-    rot_vec = q_prime.rotate(ref_vec)
-    angle = np.rad2deg(angle_between(ref_vec, rot_vec))
-    rospy.logdebug(
-        "Angle of deviation from correct orientation pose to current pose: {}".format(angle))
+    q_prime_fixed = correct_q * q_prime * correct_q.inverse
+
+    
+    roll, pitch, yaw = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
+    
+    # print(roll, pitch, yaw)
+    
+    # rot_vec = q_prime.rotate(ref_vec)
+    # angle = np.rad2deg(angle_between(ref_vec, rot_vec))
+    # rospy.loginfo(
+    #     "Angle of deviation from correct orientation pose to current pose: {}".format(angle))
     # Classification
-    if angle < threshold_angle:
+    # if angle < threshold_angle:
+    #     return 1
+    # else:
+    #     return 0
+    if roll < threshold_angle and pitch < threshold_angle:
         return 1
     else:
         return 0
@@ -91,7 +102,7 @@ def twist(orientation_pose, current_pose, threshold_angle):
     roll, pitch, yaw = quaternion_to_euler(q_prime_fixed[1], q_prime_fixed[2], q_prime_fixed[3], q_prime_fixed[0])
     
   
-    twist_val = roll
+    twist_val = yaw
 
     rospy.logdebug(
         "Twist/roll angle: {}".format(twist_val))
